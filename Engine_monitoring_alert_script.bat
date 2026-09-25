@@ -1,0 +1,1 @@
+powershell.exe -ExecutionPolicy Bypass -File "path_to_\Engine_service_monitoring_Lark_alert.ps1"
