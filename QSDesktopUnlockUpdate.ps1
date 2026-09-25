@@ -1,4 +1,8 @@
-﻿[Console]::OutputEncoding = [System.Text.Encoding]::UTF8
+﻿## To run this script from Scheduller add run program: powershell.exe
+## Add arguments: -ExecutionPolicy Bypass -File "abs_path_to\QSDesktopUnlockUpdate.ps1"
+## Dayly every 14 days
+
+[Console]::OutputEncoding = [System.Text.Encoding]::UTF8
 $OutputEncoding = [System.Text.Encoding]::UTF8
 
 # Путь к локальному unlock-файлу
