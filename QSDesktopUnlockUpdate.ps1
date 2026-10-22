@@ -3,7 +3,7 @@
 ## Dayly every 14 days
 
 # ==============================================================================
-# АНАЛИЗ ОШИБОК И РЕКОМЕНДАЦИИ ПО УДОСКОНАЛЕНИЮ:
+# АНАЛИЗ ОШИБОК И РЕКОМЕНДАЦИИ ПО УСОВЕРШЕНСТВОВАНИЮ:
 # 1. ЗАГОЛОВОК USER-AGENT В GITHUB API: GitHub API требует обязательного присутствия заголовка User-Agent.
 #    Без него Invoke-RestMethod / Invoke-WebRequest возвращает ошибку HTTP 403 Forbidden ("Request forbidden by administrative rules").
 #    РЕШЕНИЕ: Передавать `-Headers @{ "User-Agent" = "PowerShell-Script" }`.
