@@ -2,6 +2,22 @@
 ## Add arguments: -ExecutionPolicy Bypass -File "abs_path_to\QSDesktopUnlockUpdate.ps1"
 ## Dayly every 14 days
 
+# ==============================================================================
+# АНАЛИЗ ОШИБОК И РЕКОМЕНДАЦИИ ПО УСОВЕРШЕНСТВОВАНИЮ:
+# 1. ЗАГОЛОВОК USER-AGENT В GITHUB API: GitHub API требует обязательного присутствия заголовка User-Agent.
+#    Без него Invoke-RestMethod / Invoke-WebRequest возвращает ошибку HTTP 403 Forbidden ("Request forbidden by administrative rules").
+#    РЕШЕНИЕ: Передавать `-Headers @{ "User-Agent" = "PowerShell-Script" }`.
+# 2. ОШИБКА ОБЛАСТИ ВИДИМОСТИ ФУНКЦИИ (SCOPING / FUNCTION DECLARATION):
+#    Функция `Get-SHA256` объявлена ПОСЛЕ её вызова в строках `$oldHash = Get-SHA256 $localFile` и `$newHash = Get-SHA256 $tempFile`.
+#    В PowerShell функции должны объявляться ДО первого использования.
+#    РЕШЕНИЕ: Перенести определение `function Get-SHA256` в начало скрипта.
+# 3. НАДЕЖНОСТЬ УДАЛЕНИЯ ВРЕМЕННОГО ФАЙЛА: `Remove-Item $tempFile -Force` вынесен в конец без try/finally.
+#    Если скачивание или считывание хэша завершится с ошибкой, временный файл останется на диске.
+#    РЕШЕНИЕ: Обернуть работу с временным файлом в `try { ... } finally { Remove-Item $tempFile -ErrorAction SilentlyContinue }`.
+# 4. ЛИМИТЫ GITHUB API: Анонимные запросы к GitHub API ограничены 60 запросами в час с одного IP.
+#    При частых запусках рекомендуются задержки или токен доступа.
+# ==============================================================================
+
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
 $OutputEncoding = [System.Text.Encoding]::UTF8
 

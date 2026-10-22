@@ -1,4 +1,18 @@
 ﻿chcp 65001
+
+# ==============================================================================
+# АНАЛИЗ ОШИБОК И РЕКОМЕНДАЦИИ ПО УСОВЕРШЕНСТВОВАНИЮ:
+# 1. ОТСУТСТВИЕ ПРОВЕРКИ СУЩЕСТВОВАНИЯ ДИСКА: `Get-Volume -DriveLetter $drive` выбросит исключение,
+#    если указанный диск (например, "D") отсутствует в системе.
+#    РЕШЕНИЕ: Использовать `Get-Volume -DriveLetter $drive -ErrorAction SilentlyContinue` и проверять результат на $null.
+# 2. НЕБЕЗОПАСНЫЙ GET-ЗАПРОС B TELEGRAM API: Склеивание параметров сообщения с синтаксисом %0A непосредственно в GET URL
+#    может приводить к ошибкам кодирования URLEncode при передаче пробелов или кириллицы.
+#    РЕШЕНИЕ: Используйте POST-запрос с JSON/Hashtable телом:
+#    $body = @{ chat_id = $chatId; text = ($messages -join "`n") } | ConvertTo-Json
+#    Invoke-RestMethod -Uri "https://api.telegram.org/bot$botToken/sendMessage" -Method Post -Body $body -ContentType "application/json; charset=utf-8"
+# 3. ЗАГЛУШКИ ДАННЫХ: Переменные $botToken и $chatId пустые.
+# ==============================================================================
+
 try {
     # Укажите диски, которые хотите мониторить
     $drives = @("C", "D")
